@@ -4,11 +4,11 @@
 
 [BACKBONE]
 
-We implement RegNetX and RegNetY models in detection systems and provide their first results on Mask R-CNN, Faster R-CNN and RetinaNet.
+We implement RegNetX models in 3D detection systems and provide their first results with PointPillars on nuScenes dataset.
 
-The pre-trained modles are converted from [model zoo of pycls](https://github.com/facebookresearch/pycls/blob/master/MODEL_ZOO.md).
+The pre-trained modles are converted from [model zoo of pycls](https://github.com/facebookresearch/pycls/blob/master/MODEL_ZOO.md) and maintained in [mmcv](https://github.com/open-mmlab/mmcv).
 
-```latex
+```
 @article{radosavovic2020designing,
     title={Designing Network Design Spaces},
     author={Ilija Radosavovic and Raj Prateek Kosaraju and Ross Girshick and Kaiming He and Piotr Dollár},
@@ -22,13 +22,12 @@ The pre-trained modles are converted from [model zoo of pycls](https://github.co
 ## Usage
 
 To use a regnet model, there are two steps to do:
-
 1. Convert the model to ResNet-style supported by MMDetection
 2. Modify backbone and neck in config accordingly
 
 ### Convert model
 
-We already prepare models of FLOPs from 400M to 12G in our model zoo.
+We already prepare models of FLOPs from 800M to 12G in our model zoo.
 
 For more general usage, we also provide script `regnet2mmdet.py` in the tools directory to convert the key of models pretrained by [pycls](https://github.com/facebookresearch/pycls/) to
 ResNet-style checkpoints used in MMDetection.
@@ -36,8 +35,8 @@ ResNet-style checkpoints used in MMDetection.
 ```bash
 python -u tools/model_converters/regnet2mmdet.py ${PRETRAIN_PATH} ${STORE_PATH}
 ```
-
 This script convert model from `PRETRAIN_PATH` and store the converted model in `STORE_PATH`.
+
 
 ### Modify config
 
@@ -50,47 +49,21 @@ For other pre-trained models or self-implemented regnet models, the users are re
 
 ## Results
 
-### Mask R-CNN
+### nuScenes
 
-|   Backbone   |  Style  | Lr schd | Mem (GB) | Inf time (fps) | box AP | mask AP | Config | Download |
-| :---------: | :-----: | :-----: | :------: | :------------: | :----: | :-----: | :------: | :--------: |
-|    [R-50-FPN](../mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py)| pytorch |   1x    | 4.4      | 12.0           | 38.2   | 34.7    |  [config](https://github.com/open-mmlab/mmdetection/tree/master/configs/mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_fpn_1x_coco/mask_rcnn_r50_fpn_1x_coco_20200205-d4b0c5d6.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_fpn_1x_coco/mask_rcnn_r50_fpn_1x_coco_20200205_050542.log.json) |
-|[RegNetX-3.2GF-FPN](./mask_rcnn_regnetx-3.2GF_fpn_1x_coco.py)| pytorch |   1x    |5.0 ||40.3|36.6|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-3.2GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_1x_coco/mask_rcnn_regnetx-3.2GF_fpn_1x_coco_20200520_163141-2a9d1814.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_1x_coco/mask_rcnn_regnetx-3.2GF_fpn_1x_coco_20200520_163141.log.json)   |
-|[RegNetX-4.0GF-FPN](./mask_rcnn_regnetx-4GF_fpn_1x_coco.py)| pytorch |   1x    |5.5||41.5|37.4|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-4GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-4GF_fpn_1x_coco/mask_rcnn_regnetx-4GF_fpn_1x_coco_20200517_180217-32e9c92d.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-4GF_fpn_1x_coco/mask_rcnn_regnetx-4GF_fpn_1x_coco_20200517_180217.log.json)   |
-|    [R-101-FPN](../mask_rcnn/mask_rcnn_r101_fpn_1x_coco.py)| pytorch |   1x    | 6.4      | 10.3           | 40.0   | 36.1    |  [config](https://github.com/open-mmlab/mmdetection/tree/master/configs/mask_rcnn/mask_rcnn_r101_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r101_fpn_1x_coco/mask_rcnn_r101_fpn_1x_coco_20200204-1efe0ed5.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r101_fpn_1x_coco/mask_rcnn_r101_fpn_1x_coco_20200204_144809.log.json) |
-|[RegNetX-6.4GF-FPN](./mask_rcnn_regnetx-6.4GF_fpn_1x_coco.py)| pytorch |   1x    |6.1 ||41.0|37.1|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-6.4GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-6.4GF_fpn_1x_coco/mask_rcnn_regnetx-6.4GF_fpn_1x_coco_20200517_180439-3a7aae83.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-6.4GF_fpn_1x_coco/mask_rcnn_regnetx-6.4GF_fpn_1x_coco_20200517_180439.log.json)   |
-| [X-101-32x4d-FPN](../mask_rcnn/mask_rcnn_x101_32x4d_fpn_1x_coco.py) | pytorch |   1x    | 7.6      | 9.4            | 41.9   | 37.5    |  [config](https://github.com/open-mmlab/mmdetection/tree/master/configs/mask_rcnn/mask_rcnn_x101_32x4d_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_x101_32x4d_fpn_1x_coco/mask_rcnn_x101_32x4d_fpn_1x_coco_20200205-478d0b67.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_x101_32x4d_fpn_1x_coco/mask_rcnn_x101_32x4d_fpn_1x_coco_20200205_034906.log.json) |
-|[RegNetX-8.0GF-FPN](./mask_rcnn_regnetx-8GF_fpn_1x_coco.py)| pytorch |   1x    |6.4 ||41.7|37.5|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-8GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-8GF_fpn_1x_coco/mask_rcnn_regnetx-8GF_fpn_1x_coco_20200517_180515-09daa87e.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-8GF_fpn_1x_coco/mask_rcnn_regnetx-8GF_fpn_1x_coco_20200517_180515.log.json)   |
-|[RegNetX-12GF-FPN](./mask_rcnn_regnetx-12GF_fpn_1x_coco.py)| pytorch |   1x    |7.4 ||42.2|38|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-12GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-12GF_fpn_1x_coco/mask_rcnn_regnetx-12GF_fpn_1x_coco_20200517_180552-b538bd8b.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-12GF_fpn_1x_coco/mask_rcnn_regnetx-12GF_fpn_1x_coco_20200517_180552.log.json) |
-|[RegNetX-3.2GF-FPN-DCN-C3-C5](./mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco.py)| pytorch |   1x    |5.0 ||40.3|36.6|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco/mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco_20200520_172726-75f40794.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco/mask_rcnn_regnetx-3.2GF_fpn_mdconv_c3-c5_1x_coco_20200520_172726.log.json)   |
+|  Backbone   | Lr schd | Mem (GB) | Inf time (fps) | mAP |NDS| Download |
+| :---------: | :-----: | :------: | :------------: | :----: |:----: | :------: |
+|[SECFPN](../pointpillars/hv_pointpillars_secfpn_sbn-all_4x8_2x_nus-3d.py)|2x|16.4||35.17|49.7|[model](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/pointpillars/hv_pointpillars_secfpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_secfpn_sbn-all_4x8_2x_nus-3d_20200620_230725-0817d270.pth) &#124; [log](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/pointpillars/hv_pointpillars_secfpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_secfpn_sbn-all_4x8_2x_nus-3d_20200620_230725.log.json)|
+|[RegNetX-400MF-SECFPN](./hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_nus-3d.py)|  2x    |16.4||41.2|55.2|[model](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_nus-3d_20200620_230334-53044f32.pth) &#124; [log](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_nus-3d_20200620_230334.log.json)|
+|[FPN](../pointpillars/hv_pointpillars_fpn_sbn-all_4x8_2x_nus-3d.py)|2x|17.1||40.0|53.3|[model](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/pointpillars/hv_pointpillars_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_fpn_sbn-all_4x8_2x_nus-3d_20200620_230405-2fa62f3d.pth) &#124; [log](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/pointpillars/hv_pointpillars_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_fpn_sbn-all_4x8_2x_nus-3d_20200620_230405.log.json)|
+|[RegNetX-400MF-FPN](./hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_nus-3d.py)|2x|17.3||44.8|56.4|[model](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_nus-3d_20200620_230239-c694dce7.pth) &#124; [log](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_nus-3d_20200620_230239.log.json)|
+|[RegNetX-1.6gF-FPN](./hv_pointpillars_regnet-1.6gf_fpn_sbn-all_4x8_2x_nus-3d.py)|2x|24.0||48.2|59.3|[model](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-1.6gf_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-1.6gf_fpn_sbn-all_4x8_2x_nus-3d_20200629_050311-dcd4e090.pth) &#124; [log](https://download.openmmlab.com/mmdetection3d/v0.1.0_models/regnet/hv_pointpillars_regnet-1.6gf_fpn_sbn-all_4x8_2x_nus-3d/hv_pointpillars_regnet-1.6gf_fpn_sbn-all_4x8_2x_nus-3d_20200629_050311.log.json)|
 
-### Faster R-CNN
+### Lyft
 
-|   Backbone  |  Style  | Lr schd | Mem (GB) | Inf time (fps) | box AP | Config | Download |
-| :---------: | :-----: | :-----: | :------: | :------------: | :----: | :------: | :--------: |
-|    [R-50-FPN](../faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py)| pytorch |   1x    | 4.0      | 18.2           | 37.4   | [config](https://github.com/open-mmlab/mmdetection/tree/master/configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_fpn_1x_coco/faster_rcnn_r50_fpn_1x_coco_20200130_204655.log.json) |
-|[RegNetX-3.2GF-FPN](./faster_rcnn_regnetx-3.2GF_fpn_1x_coco.py)| pytorch |   1x    | 4.5||39.9|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/faster_rcnn_regnetx-3.2GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_1x_coco/faster_rcnn_regnetx-3.2GF_fpn_1x_coco_20200517_175927-126fd9bf.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_1x_coco/faster_rcnn_regnetx-3.2GF_fpn_1x_coco_20200517_175927.log.json)   |
-|[RegNetX-3.2GF-FPN](./faster_rcnn_regnetx-3.2GF_fpn_2x_coco.py)| pytorch |   2x    | 4.5||41.1|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/faster_rcnn_regnetx-3.2GF_fpn_2x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_2x_coco/faster_rcnn_regnetx-3.2GF_fpn_2x_coco_20200520_223955-e2081918.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_2x_coco/faster_rcnn_regnetx-3.2GF_fpn_2x_coco_20200520_223955.log.json)   |
-
-### RetinaNet
-
-|  Backbone   |  Style  | Lr schd | Mem (GB) | Inf time (fps) | box AP | Config | Download |
-| :---------: | :-----: | :-----: | :------: | :------------: | :----: | :------: |  :--------: |
-|    [R-50-FPN](../retinanet/retinanet_r50_fpn_1x_coco.py)     | pytorch |   1x    |   3.8    |      16.6      |  36.5  | [config](https://github.com/open-mmlab/mmdetection/tree/master/configs/retinanet/retinanet_r50_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130_002941.log.json) |
-|[RegNetX-800MF-FPN](./retinanet_regnetx-800MF_fpn_1x_coco.py)| pytorch |   1x    |2.5||35.6|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/retinanet_regnetx-800MF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-800MF_fpn_1x_coco/retinanet_regnetx-800MF_fpn_1x_coco_20200517_191403-f6f91d10.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-800MF_fpn_1x_coco/retinanet_regnetx-800MF_fpn_1x_coco_20200517_191403.log.json)   |
-|[RegNetX-1.6GF-FPN](./retinanet_regnetx-1.6GF_fpn_1x_coco.py)| pytorch |   1x    |3.3||37.3|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/retinanet_regnetx-1.6GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-1.6GF_fpn_1x_coco/retinanet_regnetx-1.6GF_fpn_1x_coco_20200517_191403-37009a9d.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-1.6GF_fpn_1x_coco/retinanet_regnetx-1.6GF_fpn_1x_coco_20200517_191403.log.json)   |
-|[RegNetX-3.2GF-FPN](./retinanet_regnetx-3.2GF_fpn_1x_coco.py)| pytorch |   1x    |4.2 ||39.1|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/retinanet_regnetx-3.2GF_fpn_1x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-3.2GF_fpn_1x_coco/retinanet_regnetx-3.2GF_fpn_1x_coco_20200520_163141-cb1509e8.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/retinanet_regnetx-3.2GF_fpn_1x_coco/retinanet_regnetx-3.2GF_fpn_1x_coco_20200520_163141.log.json)   |
-
-### Pre-trained models
-
-We also train some models with longer schedules and multi-scale training. The users could finetune them for downstream tasks.
-
-|    Method   |    Backbone     |  Style  | Lr schd | Mem (GB) | Inf time (fps) | box AP | mask AP | Config | Download |
-| :-----: | :-----: | :-----: | :-----: | :------: | :------------: | :----: | :-----: | :------: |  :--------: |
-|Faster RCNN |[RegNetX-3.2GF-FPN](./faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco.py)| pytorch |   3x    |5.0 ||42.2|-|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco/faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco_20200520_224253-bf85ae3e.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco/faster_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco_20200520_224253.log.json)   |
-|Mask RCNN |[RegNetX-3.2GF-FPN](./mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco.py)| pytorch |   3x    |5.0 ||43.1|38.7|[config](https://github.com/open-mmlab/mmdetection/tree/master/configs/regnet/mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco.py) | [model](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco/mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco_20200521_202221-99879813.pth) &#124; [log](http://download.openmmlab.com/mmdetection/v2.0/regnet/mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco/mask_rcnn_regnetx-3.2GF_fpn_mstrain_3x_coco_20200521_202221.log.json)   |
-
-### Notice
-
-1. The models are trained using a different weight decay, i.e., `weight_decay=5e-5` according to the setting in ImageNet training. This brings improvement of at least 0.7 AP absolute but does not improve the model using ResNet-50.
-2. RetinaNets using RegNets are trained with learning rate 0.02 with gradient clip. We find that using learning rate 0.02 could improve the results by at least 0.7 AP absolute and gradient clip is necessary to stabilize the training. However, this does not improve the performance of ResNet-50-FPN RetinaNet.
+|  Backbone   | Lr schd | Mem (GB) | Inf time (fps) | Private Score | Public Score | Download |
+| :---------: | :-----: | :------: | :------------: | :----: |:----: | :------: |
+|[SECFPN](../pointpillars/hv_pointpillars_secfpn_sbn-all_4x8_2x_lyft-3d.py)|2x|||13.4|13.4||
+|[RegNetX-400MF-SECFPN](./hv_pointpillars_regnet-400mf_secfpn_sbn-all_4x8_2x_lyft-3d.py)|  2x  ||||||
+|[FPN](../pointpillars/hv_pointpillars_fpn_sbn-all_4x8_2x_lyft-3d.py)|2x|||14.0|14.2||
+|[RegNetX-400MF-FPN](./hv_pointpillars_regnet-400mf_fpn_sbn-all_4x8_2x_lyft-3d.py)|2x|||15.5|15.6||
